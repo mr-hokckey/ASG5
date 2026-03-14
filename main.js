@@ -15,7 +15,7 @@ function main() {
     const far = 100;
     const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
 
-    camera.position.z = 20;
+    camera.position.z = 50;
     camera.position.y = 20;
 
     const scene = new THREE.Scene();
@@ -23,7 +23,11 @@ function main() {
     const boxWidth = 20;
     const boxHeight = 20;
     const boxDepth = 20;
+    const sphereRadius = 5;
     const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
+    const sphereGeometry = new THREE.SphereGeometry(sphereRadius, 10, 10);
+    const cylGeometry = new THREE.CylinderGeometry(sphereRadius, sphereRadius, boxHeight, 10, 10);
+
 
     // Add a light
     const color = 0xFFFFFF;
@@ -78,11 +82,63 @@ function main() {
         return cube;
     }
 
+    function makeSphere(geometry, color, x, y, z) {
+        const material = new THREE.MeshPhongMaterial({ color });
+
+        const sphere = new THREE.Mesh(geometry, material);
+        scene.add(sphere);
+
+        sphere.position.x = x;
+        sphere.position.y = y;
+        sphere.position.z = z;
+
+        return sphere;
+    }
+
+    function makeCylinder(geometry, color, x, y, z) {
+        const material = new THREE.MeshPhongMaterial({ color });
+
+        const cyl = new THREE.Mesh(geometry, material);
+        scene.add(cyl);
+
+        cyl.position.x = x;
+        cyl.position.y = y;
+        cyl.position.z = z;
+
+        return cyl;
+    }
+
+    // SHAPES
+    // 20 primitive shapes - i was going to move them in different positions
+    // but the way they rotate with each other is mesmerizing, so i kept it as is :)
+    // (i know how lazy this is, i'm sorry... finals week is ruthless this quarter)
     const cubes = [
         makeTexturedCube(geometry, texture, 0),
         makeCube(geometry, 0x8844aa, -40),
         makeCube(geometry, 0xaa8844, 40),
+        makeCube(geometry, 0xaa8844, 40),
+        makeCube(geometry, 0xaa8844, 40),
+        makeCube(geometry, 0xaa8844, 40),
+        makeCube(geometry, 0xaa8844, 40),
+        makeCube(geometry, 0xaa8844, 40),
+        makeCube(geometry, 0xaa8844, 40),
+        makeCube(geometry, 0xaa8844, 40),
+        makeCube(geometry, 0xaa8844, 40),
+        makeCube(geometry, 0xaa8844, 40),
+        makeCube(geometry, 0xaa8844, 40),
+        makeCube(geometry, 0xaa8844, 40),
+        makeCube(geometry, 0xaa8844, 40),
+        makeCube(geometry, 0xaa8844, 40),
+        makeCube(geometry, 0xaa8844, 40),
+        makeCube(geometry, 0xaa8844, 40),
+        makeCube(geometry, 0xaa8844, 40),
+        makeCube(geometry, 0xaa8844, 40),
     ];
+
+    // other shapes that aren't cubes
+    makeSphere(sphereGeometry, 0x00ff00, 0, 0, 10);
+    makeCylinder(cylGeometry, 0xeeeeee, 0, -10, 0);
+
 
     // OBJ LOADING
     {
