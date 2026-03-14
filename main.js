@@ -26,7 +26,7 @@ function main() {
     scene.add(light);
 
 
-    function makeInstance(geometry, color, x) {
+    function makeCube(geometry, color, x) {
         const material = new THREE.MeshPhongMaterial({ color });
 
         const cube = new THREE.Mesh(geometry, material);
@@ -37,10 +37,27 @@ function main() {
         return cube;
     }
 
+    // Texture
+    const loader = new THREE.TextureLoader();
+    const texture = loader.load( 'wall.jpg' );
+    texture.colorSpace = THREE.SRGBColorSpace;
+
+
+    function makeTexturedCube(geometry, texture, x) {
+        const material = new THREE.MeshBasicMaterial({ map: texture });
+
+        const cube = new THREE.Mesh(geometry, material);
+        scene.add(cube);
+
+        cube.position.x = x;
+
+        return cube;
+    }
+
     const cubes = [
-        makeInstance(geometry, 0x44aa88, 0),
-        makeInstance(geometry, 0x8844aa, -2),
-        makeInstance(geometry, 0xaa8844, 2),
+        makeTexturedCube(geometry, texture, 0),
+        makeCube(geometry, 0x8844aa, -2),
+        makeCube(geometry, 0xaa8844, 2),
     ];
 
 
