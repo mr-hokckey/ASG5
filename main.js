@@ -20,9 +20,9 @@ function main() {
 
     const scene = new THREE.Scene();
 
-    const boxWidth = 1;
-    const boxHeight = 1;
-    const boxDepth = 1;
+    const boxWidth = 20;
+    const boxHeight = 20;
+    const boxDepth = 20;
     const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
 
     // Add a light
@@ -32,6 +32,21 @@ function main() {
     light.position.set(-1, 2, 4);
     scene.add(light);
 
+    // SKYBOX
+    // yes i did just use the cubemap image files from the tutorial site, they just fit together so perfectly...
+    {
+        const loader = new THREE.CubeTextureLoader();
+        const texture = loader.load([
+            'skybox/pos-x.jpg',
+            'skybox/neg-x.jpg',
+            'skybox/pos-y.jpg',
+            'skybox/neg-y.jpg',
+            'skybox/pos-z.jpg',
+            'skybox/neg-z.jpg',
+        ]);
+        scene.background = texture;
+    }
+
 
     function makeCube(geometry, color, x) {
         const material = new THREE.MeshPhongMaterial({ color });
@@ -40,6 +55,7 @@ function main() {
         scene.add(cube);
 
         cube.position.x = x;
+        cube.position.z = -30;
 
         return cube;
     }
@@ -57,14 +73,15 @@ function main() {
         scene.add(cube);
 
         cube.position.x = x;
+        cube.position.z = -30;
 
         return cube;
     }
 
     const cubes = [
         makeTexturedCube(geometry, texture, 0),
-        makeCube(geometry, 0x8844aa, -2),
-        makeCube(geometry, 0xaa8844, 2),
+        makeCube(geometry, 0x8844aa, -40),
+        makeCube(geometry, 0xaa8844, 40),
     ];
 
     // OBJ LOADING
