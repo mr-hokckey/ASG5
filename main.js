@@ -1,4 +1,10 @@
+// CLOUD STRIFE FROM FINAL FANTASY VII ASSET: https://models.spriters-resource.com/pc_computer/finalfantasy7/asset/321485/
+// I used https://imagetostl.com/convert/file/dae/to/obj to convert the .dae file to a .obj file.
+
+
 import * as THREE from 'three';
+import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
+import { MTLLoader } from 'three/addons/loaders/MTLLoader.js';
 
 function main() {
     const canvas = document.querySelector('#c');
@@ -6,10 +12,11 @@ function main() {
     const fov = 75;
     const aspect = 2;
     const near = 0.1;
-    const far = 5;
+    const far = 100;
     const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
 
-    camera.position.z = 2;
+    camera.position.z = 20;
+    camera.position.y = 20;
 
     const scene = new THREE.Scene();
 
@@ -39,12 +46,12 @@ function main() {
 
     // Texture
     const loader = new THREE.TextureLoader();
-    const texture = loader.load( 'wall.jpg' );
+    const texture = loader.load('wall.jpg');
     texture.colorSpace = THREE.SRGBColorSpace;
 
 
     function makeTexturedCube(geometry, texture, x) {
-        const material = new THREE.MeshBasicMaterial({ map: texture });
+        const material = new THREE.MeshPhongMaterial({ map: texture });
 
         const cube = new THREE.Mesh(geometry, material);
         scene.add(cube);
@@ -59,6 +66,27 @@ function main() {
         makeCube(geometry, 0x8844aa, -2),
         makeCube(geometry, 0xaa8844, 2),
     ];
+
+    // OBJ LOADING
+    {
+        const mtlLoader = new MTLLoader();
+        mtlLoader.load('Cloud/Cloud.mtl', (mtl) => {
+            mtl.preload();
+            objLoader.setMaterials(mtl);
+        });
+        const objLoader = new OBJLoader();
+        objLoader.load('Cloud/Cloud.obj', (root) => {
+            root.traverse((child) => {
+                if (child.isMesh) {
+                    child.material.transparent = true;
+                }
+            });
+            scene.add(root);
+        });
+
+    }
+
+
 
 
     function render(time) {
