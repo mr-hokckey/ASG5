@@ -6,9 +6,13 @@ import * as THREE from 'three';
 import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
 import { MTLLoader } from 'three/addons/loaders/MTLLoader.js';
 
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+
 function main() {
     const canvas = document.querySelector('#c');
     const renderer = new THREE.WebGLRenderer({ antialias: true, canvas });
+    renderer.setSize(window.innerWidth, window.innerHeight);
     const fov = 75;
     const aspect = 2;
     const near = 0.1;
@@ -17,6 +21,10 @@ function main() {
 
     camera.position.z = 50;
     camera.position.y = 20;
+
+    const controls = new OrbitControls(camera, canvas);
+    controls.target.set(0, 0, 0);
+    controls.update();
 
     const scene = new THREE.Scene();
 
